@@ -338,6 +338,15 @@ def reloadkam():
 
 manager = Manager(app)
 
+def get_env_variables:
+    #Override properties in settings.py if environment varaibles are set
+    
+    DB_VARS = {'TYPE','HOST','PORT','NAME','USER','PASS'}
+    for each db_var in DB_VARS:
+        if os.getenv('KAM_DB_'+db_var): 
+            setattr(settings,'KAM_DB_'+db_var,os.getenv('KAM_DB_'+db_var))
+
+
 def init_app(flask_app):
     #Setup the Flask session manager with a random secret key
     app.secret_key = os.urandom(12)
@@ -349,6 +358,7 @@ def init_app(flask_app):
 
     #db.init_app(flask_app)
     #db.app = app
+    get_env_variables()
 
     manager.run()
 

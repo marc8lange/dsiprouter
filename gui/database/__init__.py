@@ -73,9 +73,12 @@ def getDBURI():
        return None
 
 #Make the engine global
-engine = create_engine(getDBURI(), echo=True, pool_recycle=10)
+engine =  None
 
 def loadSession():
+    global engine
+
+    engine = create_engine(getDBURI(), echo=True, pool_recycle=10)
     metadata = MetaData(engine)
     dr_gateways = Table('dr_gateways', metadata, autoload=True)
     address = Table('address', metadata, autoload=True)

@@ -10,8 +10,7 @@ import json
 
 app = Flask(__name__, static_folder="./static", static_url_path="/static")
 app.debug = settings.DEBUG
-#app.add_template_filter()
-db = loadSession(); 
+
 
 @app.route('/')
 def index():
@@ -338,16 +337,21 @@ def reloadkam():
 
 manager = Manager(app)
 
-def get_env_variables:
+def get_env_variables():
     #Override properties in settings.py if environment varaibles are set
-    
+    global KAM_DB_HOST
+
+
     DB_VARS = {'TYPE','HOST','PORT','NAME','USER','PASS'}
-    for each db_var in DB_VARS:
+    for db_var in DB_VARS:
         if os.getenv('KAM_DB_'+db_var): 
             setattr(settings,'KAM_DB_'+db_var,os.getenv('KAM_DB_'+db_var))
+            print('Environment Variable {} == {}'.format('KAM_DB_'+db_var,getattr(settings,'KAM_DB_'+db_var)))
 
 
 def init_app(flask_app):
+
+    global db
     #Setup the Flask session manager with a random secret key
     app.secret_key = os.urandom(12)
 
@@ -356,10 +360,8 @@ def init_app(flask_app):
     app.jinja_env.filters["yesOrNoFilter"]=yesOrNoFilter
     app.jinja_env.filters["noneFilter"]=noneFilter
 
-    #db.init_app(flask_app)
-    #db.app = app
     get_env_variables()
-
+    db = loadSession()
     manager.run()
 
 def yesOrNoFilter(list,field):

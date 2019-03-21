@@ -57,7 +57,7 @@ After the install is completed you can now restore your kamailio database using 
 After the kamailio database is restored you need to restart dsiprouter using the following commands:
 ::
   
-  cd /opt/disprouter/ 
+  cd /opt/dsiprouter/ 
 
   ./dsiprouter.sh restart 
 |
